@@ -151,6 +151,19 @@ function update() {
     while (bulletArray.length > 0 && (bulletArray[0].used || bulletArray[0].y < 0)) {
         bulletArray.shift(); // Removes the first element of the array
     }
+
+    // Next level
+    if (alienCount == 0) {
+        // Increase the number of aliens in columns and rows by 1
+        alienColumns = Math.min(alienColumns + 1, columns/2 -2); // Cap at 16/2 - 2 = 6 --> Max alien cols
+
+        alienRows = Math.min(alienRows + 1, rows-4); // Cap at 16 - 4 = 12 --> Max alien rows
+        alienVelocityX += 0.2; //Increase the aien movement speed
+        // Clearing alien and bullet arrays before creating new aliens to prevent errors
+        alienArray = [];
+        bulletArray = [];
+        createAliens();
+    }
 }
 
 // e --> event 

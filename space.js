@@ -51,9 +51,13 @@ let alienImg;
 let alienRows = 2;
 let alienColumns = 3;
 
-// Number for aliens to defeat
+// Number of aliens to defeat
 let alienCount = 0;
 
+// Alien moving speed
+let alienVelocityX = 1;
+
+///////////////////////////////////////////////////////////////////////////
 
 // When the page loads, the variable board will be acessing the #board tag:
 window.onload = function() {
@@ -98,6 +102,13 @@ function update() {
     for (let i = 0; i < alienArray.length; i++) {
         let alien = alienArray[i];
         if (alien.alive) {
+            // Moving alien on x before drawing it
+            alien.x += alienVelocityX;
+
+            // If alien toches the borders flip its direction
+            if (alien.x + alien.width >= board.width || alien.x <= 0) {
+                alienVelocityX *= -1
+            }
             context.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
         }
     }

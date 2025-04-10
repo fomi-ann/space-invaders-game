@@ -31,6 +31,9 @@ let ship = {
 
 let shipImg;
 
+// Ship moves one tile at a time
+let shipVelocityX = tileSize;
+
 // When the page loads, the variable board will be acessing the #board tag:
 window.onload = function() {
     board = document.getElementById("board");
@@ -48,5 +51,30 @@ window.onload = function() {
     // On load draw ship
     shipImg.onload = function(){
         context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+    }
+
+    requestAnimationFrame(update);
+
+    // Waiting for key to be pressed, checks if the key pressed is arrow key
+    document.addEventListener("keydown", moveShip);
+}
+
+function update() {
+    requestAnimationFrame(update);
+
+    // Clearing the canvas so the frames won't stack
+    context.clearRect(0,0, board.width, board.height);
+
+    // Drawing ship continuesly, game loop
+    context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+}
+
+// e --> event 
+function moveShip(e) {
+    // Adding check so the ship will stay within the board
+    if (e.code == "ArrowLeft" && ship.x - shipVelocityX >= 0) {
+        ship.x -= shipVelocityX; // Move ship one tile to the left
+    } else if (e.code == "ArrowRight" && ship.x + shipVelocityX + ship.width <= board.width) {
+        ship.x += shipVelocityX; // Move ship one tile to the right
     }
 }

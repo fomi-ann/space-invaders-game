@@ -57,6 +57,12 @@ let alienCount = 0;
 // Alien moving speed
 let alienVelocityX = 1;
 
+// Bullets
+let bulletArray = [];
+
+//Bullets go up [Top: 0; Bottom: boardHeight]
+let bulletVelocityY = -10;
+
 ///////////////////////////////////////////////////////////////////////////
 
 // When the page loads, the variable board will be acessing the #board tag:
@@ -87,6 +93,9 @@ window.onload = function() {
 
     // Waiting for key to be pressed, checks if the key pressed is arrow key
     document.addEventListener("keydown", moveShip);
+
+    // Listen for space bar: keyup --> the key needs to be released
+    document.addEventListener("keyup", shoot);
 }
 
 function update() {
@@ -119,6 +128,14 @@ function update() {
             context.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
         }
     }
+
+    // Bullets
+    for (let i = 0; i < bulletArray.length; i++) {
+        let bullet = bulletArray[i];
+        bullet.y += bulletVelocityY;
+        context.fillStyle = "white";
+        context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height)
+    }
 }
 
 // e --> event 
@@ -150,4 +167,20 @@ function createAliens() {
     }
 
     alienCount = alienArray.length;
+}
+
+function shoot(e) {
+    if (e.code == "Space") {
+        // Shoot
+        let bullet = {
+            // Place the bullet x position in front of the cannon
+            x: ship.x + shipWidth * 15 / 32,
+            y: ship.y,
+            width: tileSize / 8,
+            height: tileSize / 2,
+            // If the bullet touches the alien
+            used: false // To make sure the bullet won't fly through every alien row
+        }
+        bulletArray.push(bullet); 
+    }
 }

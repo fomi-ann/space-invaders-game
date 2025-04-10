@@ -136,6 +136,11 @@ function update() {
         context.fillStyle = "white";
         context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height)
     }
+
+    // Clear bullets
+    while (bulletArray.length > 0 && (bulletArray[0].used || bulletArray[0].y < 0)) {
+        bulletArray.shift(); // Removes the first element of the array
+    }
 }
 
 // e --> event 

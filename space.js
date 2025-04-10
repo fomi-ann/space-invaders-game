@@ -63,6 +63,10 @@ let bulletArray = [];
 //Bullets go up [Top: 0; Bottom: boardHeight]
 let bulletVelocityY = -10;
 
+// Game score
+let score = 0;
+let gameOver = false;
+
 ///////////////////////////////////////////////////////////////////////////
 
 // When the page loads, the variable board will be acessing the #board tag:
@@ -101,6 +105,10 @@ window.onload = function() {
 function update() {
     requestAnimationFrame(update);
 
+    if (gameOver) {
+        return;
+    }
+
     // Clearing the canvas so the frames won't stack
     context.clearRect(0,0, board.width, board.height);
 
@@ -126,6 +134,10 @@ function update() {
                 }
             }
             context.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
+
+            if (alien.y >= ship.y) {
+                gameOver = true;
+            }
         }
     }
 
@@ -143,6 +155,7 @@ function update() {
                 bullet.used = true;
                 alien.alive = false;
                 alienCount --;
+                score += 100;
             }
         }
     }
@@ -164,10 +177,19 @@ function update() {
         bulletArray = [];
         createAliens();
     }
+
+    // Score
+    context.fillStyle = "white";
+    context.font = "16px corier";
+    context.fillText(score, 5, 20);
 }
 
 // e --> event 
 function moveShip(e) {
+    // Player can't move ship if the game is over
+    if (gameOver) {
+        return;
+    }
     // Adding check so the ship will stay within the board
     if (e.code == "ArrowLeft" && ship.x - shipVelocityX >= 0) {
         ship.x -= shipVelocityX; // Move ship one tile to the left
@@ -198,6 +220,11 @@ function createAliens() {
 }
 
 function shoot(e) {
+    // Player can't shoot if the game is over
+    if (gameOver) {
+        return;
+    }
+
     if (e.code == "Space") {
         // Shoot
         let bullet = {

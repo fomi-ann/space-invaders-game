@@ -29,10 +29,24 @@ let ship = {
     height: shipHeight
 }
 
+let shipImg;
+
 // When the page loads, the variable board will be acessing the #board tag:
 window.onload = function() {
     board = document.getElementById("board");
     board.width = boardWidth;
     board.height = boardHeight;
     context = board.getContext("2d");
+
+    // Draw initial ship / chack position for the ship object
+    // context.fillStyle = "green";
+    // context.fillRect(ship.x, ship.y, ship.width, ship.height)
+
+    // Load images
+    shipImg = new Image();
+    shipImg.src = "./images/ship.png"
+    // On load draw ship
+    shipImg.onload = function(){
+        context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+    }
 }
